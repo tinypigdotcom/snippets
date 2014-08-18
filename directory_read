@@ -1,0 +1,12 @@
+# example
+# my @dot_files = grep { /^\./ && -f "$some_dir/$_" } get_directory($target);
+sub get_directory {
+    my ($dir) = @_;
+    opendir(my $dh, $dir) || die "can't opendir $dir: $!";
+    my @files = readdir($dh);
+    closedir $dh;
+    return @files;
+}
+
+my $target = $ENV{HOME};
+my @bins = grep { /^bin\d?/ && -d "$target/$_" } get_directory($target);

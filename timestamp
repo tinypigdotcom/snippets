@@ -1,0 +1,8 @@
+sub timestamp {
+    my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
+
+    $mon++;
+    $year += 1900;
+
+    return sprintf("%04s%02s%02s%02s%02s%02s",$year,$mon,$mday,$hour,$min,$sec);
+}

@@ -1,0 +1,6 @@
+use IO::File;
+my $ofh = IO::File->new('a.out', '>');
+die if (!defined $ofh);
+
+print $ofh "bar\n";
+$ofh->close;

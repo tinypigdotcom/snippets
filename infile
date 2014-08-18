@@ -1,0 +1,10 @@
+use IO::File;
+
+my $ifh = IO::File->new($0, '<');
+die if (!defined $ifh);
+
+while(<$ifh>) {
+    chomp;
+    print "l: $_\n";
+}
+$ifh->close;

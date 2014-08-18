@@ -1,0 +1,21 @@
+use MyClient::DB::Lite;
+my $mcdl = MyClient::DB::Lite->new();
+my $dbh  = $mcdl->get_dbh();
+
+my $sql = qq{
+    SELECT field1, field2
+    FROM   table
+};
+
+my $sth = $dbh->prepare($sql);
+$sth->execute();
+my $results = $sth->fetchall_arrayref();
+$sth->finish();
+
+my $insert  = $dbh->prepare(q{
+    INSERT INTO table (field1,field2)
+    VALUES(?,?)
+});
+$insert->execute($field1, $field2);
+$insert->finish();
+

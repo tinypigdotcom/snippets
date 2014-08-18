@@ -1,0 +1,3 @@
+use lib '/home/dbradford/lib';
+use DMB::Tools;
+dt_log('INC',\%INC);
