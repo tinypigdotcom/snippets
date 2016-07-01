@@ -1,0 +1,25 @@
+sub logger {
+    my ($message,$logfile) = @_;
+    chomp($message);
+
+    if ( !$logfile ) {
+        my $PROG = $0;
+        $PROG =~ s{.*/}{};
+        $logfile = "$PROG.log";
+    }
+
+    my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
+
+    $mon++;
+    $year += 1900;
+
+    my $timestamp = sprintf("%04s/%02s/%02s %02s:%02s:%02s",$year,$mon,$mday,$hour,$min,$sec);
+
+    open(my $ofh, '>>', $logfile);
+    die if (!defined $ofh);
+
+    print $ofh "---\n$timestamp $message\n\n";
+    $ofh->close;
+
+    return;
+}
