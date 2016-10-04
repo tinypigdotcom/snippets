@@ -1,6 +1,6 @@
-use IO::File;
-my $ofh = IO::File->new('a.out', '>');
-die if (!defined $ofh);
+open(my $ofh, ">", "a.out")
+    or die "Can't open < a.out: $!";
 
 print $ofh "bar\n";
-$ofh->close;
+close $ofh;
+
