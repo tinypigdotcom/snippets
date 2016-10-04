@@ -1,10 +1,9 @@
-use IO::File;
-
-my $ifh = IO::File->new($0, '<');
-die if (!defined $ifh);
+open(my $ifh, "<", "input.txt")
+    or die "Can't open < input.txt: $!";
 
 while(<$ifh>) {
     chomp;
     print "l: $_\n";
 }
 $ifh->close;
+
