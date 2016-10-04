@@ -5,5 +5,5 @@ while(<$ifh>) {
     chomp;
     print "l: $_\n";
 }
-$ifh->close;
+close $ifh;
 
