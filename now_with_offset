@@ -1,0 +1,20 @@
+sub now_with_offset {
+    my ($offset) = @_;
+
+    my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
+
+    $mon++;
+    $year += 1900;
+
+    my $now = sprintf("%04s-%02s-%02s %02s:%02s:%02s",$year,$mon,$mday,$hour,$min,$sec);
+
+    my $strp = DateTime::Format::Strptime->new(
+        pattern => '%Y-%m-%d %H:%M:%S'
+    );
+
+    my $dt = $strp->parse_datetime($now);
+    return $dt->add(days => $offset)->strftime("%Y-%m-%d %H:%M:%S");
+}
+
+my $date = now_with_offset(30);
+
