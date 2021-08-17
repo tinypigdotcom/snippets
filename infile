@@ -1,5 +1,6 @@
-open(my $ifh, "<", "input.txt")
-    or die "Can't open < input.txt: $!";
+my $infile = 'input.txt';
+open(my $ifh, "<", $infile)
+    or die "Can't open < $infile: $!";
 
 while(<$ifh>) {
     chomp;

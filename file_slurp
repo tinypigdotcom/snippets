@@ -1,1 +1,8 @@
-my $contents = do { local $/; <$fh> }
+my $infile = 'input.txt';
+open(my $ifh, "<", $infile)
+    or die "Can't open < $infile: $!";
+
+my $contents = do { local $/; <$ifh> };
+
+close $ifh;
+
