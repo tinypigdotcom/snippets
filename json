@@ -1,0 +1,6 @@
+use JSON::XS;
+
+my $json_xs = JSON::XS->new()->pretty->canonical;
+my $json = $json_xs->encode(\@my_data);
+my $perl = $json_xs->decode($json);
+
