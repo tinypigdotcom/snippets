@@ -1,6 +1,6 @@
-open(my $ofh, ">", "a.out")
-    or die "Can't open < a.out: $!";
-
+my $outfile = 'a.out';
+open(my $ofh, ">", $outfile)
+    or die "Can't open < $outfile: $!";
 print $ofh "bar\n";
 close $ofh;
 
