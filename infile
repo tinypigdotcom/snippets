@@ -1,4 +1,4 @@
-my $infile = 'input.txt';
+my $infile = "input.txt";
 open(my $ifh, "<", $infile)
     or die "Can't open < $infile: $!";
 

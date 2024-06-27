@@ -1,25 +1,16 @@
-sub logger {
-    my ($message,$logfile) = @_;
-    chomp($message);
+use File::Basename;
 
-    if ( !$logfile ) {
-        my $PROG = $0;
-        $PROG =~ s{.*/}{};
-        $logfile = "$PROG.log";
-    }
+my $log = "$ENV{HOME}/logs/" . basename($0) . ".log";
+sub do_log {
+	my $line = "[" . localtime() . "] " . shift . "\n";
 
-    my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
-
-    $mon++;
-    $year += 1900;
-
-    my $timestamp = sprintf("%04s/%02s/%02s %02s:%02s:%02s",$year,$mon,$mday,$hour,$min,$sec);
-
-    open(my $ofh, '>>', $logfile);
-    die if (!defined $ofh);
-
-    print $ofh "---\n$timestamp $message\n\n";
-    $ofh->close;
-
-    return;
+	warn $line;
+	open(my $ofh, ">>", $log) or die "Can't open $log: $!";
+	print $ofh $line;
+	close $ofh;
 }
+
+do_log('This is a message without a category.');
+do_log('[WARNING] This is a warning message.');
+do_log('[ERROR] This is an error message.');
+

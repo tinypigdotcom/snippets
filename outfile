@@ -1,4 +1,4 @@
-my $outfile = 'a.out';
+my $outfile = "a.out";
 open(my $ofh, ">", $outfile)
     or die "Can't open < $outfile: $!";
 print $ofh "bar\n";
