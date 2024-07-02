@@ -17,3 +17,4 @@ sub do_log {
 do_log('DEBUG', 'This is a debug message.');
 do_log('INFO', 'This is an info message.');
 do_log('WARN', 'This is a warning message.');
+
