@@ -2,16 +2,16 @@ my $LOG_LEVEL = 'DEBUG';
 
 my %levels = (DEBUG => 1, INFO => 2, WARN => 3); my $log;
 sub do_log {
-	my ($level, $message) = @_;
-	$log ||= "$ENV{HOME}/logs/" . (split('/', $0))[-1] . ".$$.log";
-	my $line = "[" . localtime() . "] [$level] $message\n";
+    my ($level, $message) = @_;
+    $log ||= "$ENV{HOME}/logs/" . (split('/', $0))[-1] . ".$$.log";
+    my $line = "[" . localtime() . "] [$level] $message\n";
 
-	return if !(exists $levels{$level} && $levels{$level} >= $levels{$LOG_LEVEL});
+    return if !(exists $levels{$level} && $levels{$level} >= $levels{$LOG_LEVEL});
 
-	warn $line;
-	open(my $ofh, ">>", $log) or die "Can't open $log: $!";
-	print $ofh $line;
-	close $ofh;
+    warn $line;
+    open(my $ofh, ">>", $log) or die "Can't open $log: $!";
+    print $ofh $line;
+    close $ofh;
 }
 
 do_log('DEBUG', 'This is a debug message.');
