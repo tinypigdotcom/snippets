@@ -1,8 +1,12 @@
-use File::Basename;
+my $LOG_LEVEL = 'DEBUG';
 
-my $log = "$ENV{HOME}/logs/" . basename($0) . ".log";
+my %levels = (DEBUG => 1, INFO => 2, WARN => 3); my $log;
 sub do_log {
-	my $line = "[" . localtime() . "] " . shift . "\n";
+	my ($level, $message) = @_;
+	$log ||= "$ENV{HOME}/logs/" . (split('/', $0))[-1] . ".$$.log";
+	my $line = "[" . localtime() . "] [$level] $message\n";
+
+	return if !(exists $levels{$level} && $levels{$level} >= $levels{$LOG_LEVEL});
 
 	warn $line;
 	open(my $ofh, ">>", $log) or die "Can't open $log: $!";
@@ -10,7 +14,7 @@ sub do_log {
 	close $ofh;
 }
 
-do_log('This is a message without a category.');
-do_log('[WARNING] This is a warning message.');
-do_log('[ERROR] This is an error message.');
+do_log('DEBUG', 'This is a debug message.');
+do_log('INFO', 'This is an info message.');
+do_log('WARN', 'This is a warning message.');
 
