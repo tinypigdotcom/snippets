@@ -1,9 +1,16 @@
 my $LOG_LEVEL = 'DEBUG';
+my $LOG_DIR = "$ENV{HOME}/logs/";
 
-my %levels = (DEBUG => 1, INFO => 2, WARN => 3); my $log;
+use Sys::Hostname;
+use Time::HiRes qw(gettimeofday);
+
+my %levels = (DEBUG => 1, INFO => 2, WARN => 3);
+my $log;
+
 sub do_log {
     my ($level, $message) = @_;
-    $log ||= "$ENV{HOME}/logs/" . (split('/', $0))[-1] . ".$$.log";
+    $log ||= $LOG_DIR . (split('/', $0))[-1] . "."
+        . sprintf("%s-%d.%06d", hostname(), $$, (gettimeofday)[1]) . ".log";
     my $line = "[" . localtime() . "] [$level] $message\n";
 
     return if !(exists $levels{$level} && $levels{$level} >= $levels{$LOG_LEVEL});
