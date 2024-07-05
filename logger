@@ -1,27 +1,36 @@
+#.logger file in your HOME directory
+## DEBUG -> INFO -> WARN
+#[default]
+#log_level = INFO
+#
+#[my_program]
+#log_level = WARN
+
 my $LOG_LEVEL = 'DEBUG';
+my $APP = (split('/', $0))[-1];
 my $LOG_DIR = "$ENV{HOME}/logs/";
 
+use Config::Tiny;
+use Data::Dumper::Compact 'ddc';
 use Sys::Hostname;
 use Time::HiRes qw(gettimeofday);
-
-my %levels = (DEBUG => 1, INFO => 2, WARN => 3);
-my $log;
-
+my (%levels, $log);
 sub do_log {
     my ($level, $message) = @_;
-    $log ||= $LOG_DIR . (split('/', $0))[-1] . "."
-        . sprintf("%s-%d.%06d", hostname(), $$, (gettimeofday)[1]) . ".log";
+    %levels = (DEBUG => 1, INFO => 2, WARN => 3) if !%levels;
+    my $config = Config::Tiny->read("$ENV{HOME}/.logger");
+    my $log_level = $config->{$APP}->{log_level} // $config->{default}->{log_level} // $LOG_LEVEL;
+    return if !(exists $levels{$level} && $levels{$level} >= $levels{$log_level});
+    $log ||= "$LOG_DIR$APP." . sprintf("%s-%d.%06d", hostname(), $$, (gettimeofday)[1]) . ".log";
+    $message = ddc($message) if ref $message;
     my $line = "[" . localtime() . "] [$level] $message\n";
-
-    return if !(exists $levels{$level} && $levels{$level} >= $levels{$LOG_LEVEL});
-
     warn $line;
     open(my $ofh, ">>", $log) or die "Can't open $log: $!";
     print $ofh $line;
     close $ofh;
 }
 
-do_log('DEBUG', 'This is a debug message.');
+do_log('DEBUG', { msg => 'This is a debug message.', foo => 123 });
 do_log('INFO', 'This is an info message.');
 do_log('WARN', 'This is a warning message.');
 
