@@ -5,6 +5,7 @@
 #
 #[my_program]
 #log_level = WARN
+#suppress_stderr = 0
 
 my $LOG_LEVEL = 'DEBUG';
 my $APP = (split('/', $0))[-1];
@@ -24,7 +25,7 @@ sub do_log {
     $log ||= "$LOG_DIR$APP." . sprintf("%s-%d.%06d", hostname(), $$, (gettimeofday)[1]) . ".log";
     $message = ddc($message) if ref $message;
     my $line = "[" . localtime() . "] [$level] $message\n";
-    warn $line;
+    print STDERR $line if !$config->{$app}->{suppress_stderr};
     open(my $ofh, ">>", $log) or die "Can't open $log: $!";
     print $ofh $line;
     close $ofh;
