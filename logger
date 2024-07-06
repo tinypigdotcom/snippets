@@ -25,7 +25,7 @@ sub do_log {
     $log ||= "$LOG_DIR$APP." . sprintf("%s-%d.%06d", hostname(), $$, (gettimeofday)[1]) . ".log";
     $message = ddc($message) if ref $message;
     my $line = "[" . localtime() . "] [$level] $message\n";
-    print STDERR $line if !$config->{$app}->{no_print};
+    print STDERR $line if !$config->{$APP}->{no_print};
     open(my $ofh, ">>", $log) or die "Can't open $log: $!";
     print $ofh $line;
     close $ofh;
